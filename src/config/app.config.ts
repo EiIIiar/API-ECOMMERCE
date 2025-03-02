@@ -1,14 +1,14 @@
 import { IsDefined, IsEnum, IsNumber, Max, Min } from 'class-validator';
 
-enum Environment {
-  Development = 'development',
-  Staging = 'staging',
-  Production = 'production',
-}
-
 interface IAppConfig {
   port: number;
   environment: Environment;
+}
+
+export enum Environment {
+  Development = 'development',
+  Staging = 'staging',
+  Production = 'production',
 }
 
 export class AppConfig implements IAppConfig {
