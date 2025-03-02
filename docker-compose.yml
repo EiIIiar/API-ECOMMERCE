@@ -3,4 +3,30 @@ services:
     build: .
     container_name: app-ecommerce
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    depends_on:
+      - sqlserver
+    environment:
+      - DB_PASSWORD=YourStrong@Passw0rd
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: app-ecommerce-database
+    ports:
+      - '1433:1433'
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+      - MSSQL_PID=Express
+    volumes:
+      - sql_data:/var/opt/mssql
+    healthcheck:
+      test: ['CMD', 'nc', '-z', 'localhost', '1433']
+      interval: 30s
+      retries: 5
+      start_period: 30s
+      timeout: 30s
+
+volumes:
+  sql_data:
+    driver: local 
